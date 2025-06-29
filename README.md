@@ -1,78 +1,81 @@
 # 📌 Clear Vision: Image Super-Resolution using GANs
 
-**🔗 Application Link**: [Clear-Vision](https://clear-vision-pro.streamlit.app/)  
-**⚠️ Recommended Input**: Upload images ≤128×128 (ideal: 64×64). Models upscale inputs to 128×128.  
-**🧪 Sample Corrupted Images (64×64)**: [Google Drive Link](https://drive.google.com/drive/folders/1bzkac88TPpf9ozlXfy3wUcl_Vyu6VxHj?usp=sharing)
+<b>Note: Use 64x64(or less than 128x128) pixel images for better results because model upsamples the images to 128x128</b><br>
+<b> You can try these Corrupted samples for testing (64x64):</b> [Corrupted](https://drive.google.com/drive/folders/1Q1aRVazgiDPyZ3cBlAGdXYPtKml3e3MZ) <br>
 
----
+## 📄 Overview
+This project explores image super-resolution using various GAN architectures:
+- *SRGAN* – Super-Resolution Generative Adversarial Network
+- *SRWGAN* – Combination of SRGAN with Wasserstein loss
 
-## 📄 Project Overview
+Our goal is to generate high-quality high-resolution (HR) images from low-resolution (LR) inputs, which is critical for applications in surveillance, connected vehicles, and computer vision systems.
 
-This project explores deep learning techniques for **image super-resolution** using GAN-based models:
+### 🧪 Image Corruption Techniques
 
-| Model    | Description |
-|----------|-------------|
-| **SRGAN**  | Classic Super-Resolution GAN using pixel, perceptual, and adversarial losses. |
-| **SRWGAN** | Extension of SRGAN integrating **Wasserstein loss** for more stable and high-quality results. |
+To test model performance under real-world distortions, the following corruptions were applied to the low-resolution images:
 
-**Goal**: Reconstruct high-resolution (HR) images from low-resolution (LR) inputs, enabling practical applications in:
-- Surveillance
-- Autonomous vehicles
-- Image enhancement tools
-- Medical imaging
+- *Motion Blur*:  
+  Simulates camera or object movement during image capture. Achieved by convolving the image with a linear motion kernel, resulting in streaks along the direction of movement.
 
----
+- *JPEG Compression*:  
+  Introduces lossy artifacts due to aggressive compression. Mimics low-quality image storage or transmission by reducing high-frequency details and introducing blocky distortions.
 
-## 🧪 Corruption Techniques
+- *Polygon Masking*:  
+  Random polygonal regions in the image are masked (covered with black or random pixels). This simulates partial occlusion or sensor failure, forcing the model to infer missing information.
 
-To simulate real-world degradation, LR images were subjected to:
+*Corruption Strategies:*
 
-- **Motion Blur**: Simulates camera motion via convolution with motion kernels.
-- **JPEG Compression**: Introduces artifacts typical of lossy storage/transmission.
-- **Polygon Masking**: Random occlusions mimicking sensor damage or object obstruction.
+- ✅ 30% of images were corrupted with *all three* techniques.
+- ✅ 30% of images were corrupted with *any two* of the three techniques.
+- ✅ 30% of images were corrupted with *only one* of the three techniques.
+- ✅ The remaining *10% of images* were kept *uncorrupted* for baseline comparison
+<br>
+<b>Note</b> : For SRGAN and SRWGAN, the original high-resolution images were first downsampled to 64×64 (Low-Resolution), and the models were trained to upsample them by a factor of 2×, generating Super-Resolution outputs of size 128×128.  
+ <br> <br>
+Each model was tested on corrupted images to assess real-world performance degradation.
 
-**Corruption Strategy**:
-- ✅ 30% images: All 3 corruptions
-- ✅ 30% images: Any 2 corruptions
-- ✅ 30% images: Any 1 corruption
-- ✅ 10% images: Clean (for baseline testing)
 
----
+## 🚀 Models Used
 
-## 🚀 Model Output Resolution
-
-Both models upscale input images by a factor of 2×:
-
-- **Input LR**: 64×64  
-- **Output SR**: 128×128
-
----
+| Model   | Description |
+|---------|-------------|
+| *SRGAN*  | Combines pixel-wise loss with perceptual loss using VGG features and adversarial loss to produce photo-realistic images. |
+| *SRWGAN* | A hybrid model integrating SRGAN structure with Wasserstein loss for stable training and enhanced visual quality. |
 
 ## 🧠 Training Details
 
-- **Dataset**: 10,000 RGB images (128×128) from [CelebA-HQ Resized](https://www.kaggle.com/datasets/badasstechie/celebahq-resized-256x256)  
-- **Split**: 80% training, 20% validation  
-- **Hardware**: Kaggle P100 GPU  
-- **Losses Used**:
-  - **Content Loss**: MSE
-  - **Perceptual Loss**: VGG feature loss
-  - **Adversarial Loss**:
-    - Binary Crossentropy (SRGAN)
-    - Wasserstein (SRWGAN)
+- *Dataset*: 10,000 RGB images of size (128×128) [Link](https://www.kaggle.com/datasets/badasstechie/celebahq-resized-256x256)
+- *Used 20% for Validation*
+- *Training environment*: Kaggle GPU P100
+- *Loss Functions*:
+  - *Content Loss (MSE)*
+  - *Perceptual Loss (VGG)*
+  - *Adversarial Loss (BCE for SRGAN, Wasserstein for SRWGAN)*
+- *Evaluation Metrics*:
+  - PSNR (Peak Signal-to-Noise Ratio)
+  - SSIM (Structural Similarity Index)
+  - FID SCORE (Fréchet Inception Distance)
+  - LPIPS (Learned Perceptual Image Patch Similarity)
 
----
+## 📊 Results
 
-## 📊 Evaluation Metrics
+| Example | Model | LR Image | SR Output | HR Ground Truth |
+|--------|--------|----------|-----------|-----------------|
+| 1 | SRGAN (64x64 -> 128x128) | ![](sample_imgs/lr.png) | ![](sample_imgs/sr1.jpg) | ![](sample_imgs/hr.jpg) |
+| 2 | SRWGAN (64x64 -> 128x128) | ![](sample_imgs/lr2.png) | ![](sample_imgs/sr2.jpg) | ![](sample_imgs/hr2.jpg) |
+
+
+- *SRWGAN* generated the sharpest and most perceptually realistic images.
+- *SRGAN* produced good textures.
+
+### 📊 Evaluation Metrics
 
 | Model   | PSNR ↑ | SSIM ↑ | FID ↓ | LPIPS ↓ |
 |---------|--------|--------|-------|---------|
-| SRGAN   | 28.01  | 0.900  | 50.34 | 0.0371  |
-| SRWGAN  | 28.28  | 0.903  | 42.09 | 0.0364  |
+| SRGAN   | 28.01   | 0.90   | 50.34  | 0.0371   |
+| SRWGAN  | 28.28   | 0.903   | 42.09  | 0.0364   |
 
-> ↑ Higher is better &nbsp;&nbsp;&nbsp;&nbsp; ↓ Lower is better
-
----
-
+- *↑ Higher is better, **↓ Lower is better*
 
 <h2>💻 Tech Stack / Frameworks</h2>
 
@@ -95,11 +98,15 @@ Both models upscale input images by a factor of 2×:
   </li>
   <br>
   <li><strong>Image Processing:</strong><br>
-       <code>OpenCV</code> – For reading, resizing, and applying filters to images before and after super-resolution.
+       <code>OpenCV</code> - For reading, resizing, and applying filters to images before and after super-resolution.
   </li>
 </ul>
 
-
+@aadit siroya
+@ashmit rawat
+@deepanshu kumar
+@sagar modi
+@saksham bansal
 
 ## 📚 References
 
