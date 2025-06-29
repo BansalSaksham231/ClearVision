@@ -8,7 +8,7 @@ from utilities.image_utilities import preprocess_image, postprocess_image
 # Page config
 st.set_page_config(
     page_title="CLEAR-VISION | AI Image Restoration",
-    page_icon="🖼️",
+    page_icon="🖼",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -242,19 +242,19 @@ elif page == "About Team":
         <h3>Team Members</h3>
         <div class="team-member">
             <div style="width: 40px; height: 40px; background: #6e8efb; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-weight: bold;">P</div>
-            <div><h4 style="margin: 0;">Prashu</h4></div>
+            <div><h4 style="margin: 0;">Aadit</h4></div>
         </div>
         <div class="team-member">
             <div style="width: 40px; height: 40px; background: #a777e3; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-weight: bold;">B</div>
-            <div><h4 style="margin: 0;">Bidyut</h4></div>
+            <div><h4 style="margin: 0;">Saksham</h4></div>
         </div>
         <div class="team-member">
             <div style="width: 40px; height: 40px; background: #6e8efb; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-weight: bold;">V</div>
-            <div><h4 style="margin: 0;">Varssha</h4></div>
+            <div><h4 style="margin: 0;">Deepanshu</h4></div>
         </div>
         <div class="team-member">
             <div style="width: 40px; height: 40px; background: #a777e3; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-weight: bold;">K</div>
-            <div><h4 style="margin: 0;">Khushbu</h4></div>
+            <div><h4 style="margin: 0;">Sagar</h4></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
