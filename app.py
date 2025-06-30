@@ -5,6 +5,7 @@ import numpy as np
 from utilities.load_model import load_srgan, load_srwgan
 from utilities.image_utilities import preprocess_image, postprocess_image
 
+
 # Page config
 st.set_page_config(
     page_title="CLEAR-VISION | AI Image Restoration",
